@@ -18,26 +18,6 @@ type=['csv', 'xslx'])
 
 
 if uploaded_file is not None:
-    # print(uploaded_file)
-    # print("Hello")
-    # data_path = uploaded_file
-    # ecg_csv = pd.read_csv(data_path)
-    # @st.cache
-    # def load_data(nrows):
-    #     data = pd.read_csv(uploaded_file, nrows=nrows)
-    #     return data@st.cache
-    # data_load_state = st.text('Loading data...')
-    # weekly_data = load_data()
-    
-    # try:
-    # df = pd.read_csv(uploaded_file)
-    # st.line_chart(df)
-    # except Exception as e:
-    #     print(e)
-    #     df = pd.read_excel(uploaded_file)
-
-# st.line_chart(df)
-# st.line_chart(ecg_csv)
 
     df = pd.read_csv(uploaded_file)
 
@@ -62,7 +42,7 @@ if uploaded_file is not None:
     frames = [dict(data= [dict(type='scatter',
                             x=df[timeval][:k],
                             y=group1[:k]),],
-                traces= [0, 1],  # frames[k]['data'][0]  updates trace1, and   frames[k]['data'][1], trace2 
+                traces= [0, 1],  # frames[k]['data'][0]  updates trace
                 )
             for k  in  range(1, len(group1)-1)] 
 
@@ -114,9 +94,9 @@ if uploaded_file is not None:
     #                    y = -0.11, xref='paper', yref='paper', xanchor='left', yanchor='bottom', xshift=-3,
     #                    yshift=-15, font=dict(size=10, color="grey"), align="left")
 
-    # fig.show()
+
     st.write(fig_1)
-    # st.pyplot(fig)
+
 
     noise = st.slider('Select noise', 1, 30)
     st.button('Add',noise,'HZ')
@@ -150,7 +130,7 @@ if uploaded_file is not None:
         frames = [dict(data= [dict(type='scatter',
                                 x=df[timeval][:k],
                                 y=group1[:k]),],
-                    traces= [0, 1],  # frames[k]['data'][0]  updates trace1, and   frames[k]['data'][1], trace2 
+                    traces= [0, 1],   
                     )
                 for k  in  range(1, len(group1)-1)] 
 
