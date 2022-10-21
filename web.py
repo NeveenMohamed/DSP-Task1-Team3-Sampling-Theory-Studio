@@ -8,6 +8,9 @@ import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.tools as tls
+
+st.set_page_config(layout="wide")
+
 global time,signal
 def addNoise(snr):
        power=signal**2
