@@ -33,7 +33,8 @@ def draw(time,y):
     # st.pyplot(fig) 
     # st.write(fig)
     plotly_fig = tls.mpl_to_plotly(fig)
-    st.write(plotly_fig)
+    # st.write(plotly_fig)
+    st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")
 
 st.title("Signal Viewer App")
 
