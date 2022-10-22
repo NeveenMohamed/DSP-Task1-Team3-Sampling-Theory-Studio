@@ -3,12 +3,14 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd 
-
+import plotly.tools as tls
 
 # CSV Folder Path For Signal Information
-file_dir = r'C:\Users\HP Probook\Downloads'
+file_dir = r'C:\Users\Mazen Tarek\Desktop\DSP-Task-1-webApplication-signalViewer'
 file_name = 'test1.csv'
 filepath = f"{file_dir}/{file_name}"
+
+st.set_page_config(layout="wide")
 
 
 # function to implement the grid and the interfacing of signal plotting
@@ -31,7 +33,9 @@ def add_to_plot(ax,x,y,colour,label):
 
 #function to show the plotting signal
 def show_plot(f):
-  st.pyplot(f)        
+  plotly_fig = tls.mpl_to_plotly(f)
+  # st.pyplot(f) 
+  st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")       
 
 #our main function
 def main():

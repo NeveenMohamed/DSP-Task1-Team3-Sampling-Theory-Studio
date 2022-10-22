@@ -30,7 +30,7 @@ def draw(time,y):
     fig,go=plt.subplots()
     go.plot(signal.iloc[:,0],signal.iloc[:,1])
     go.set_title("Signal Digram")
-    go.set_xlabel("Time")
+    go.set_xlabel("time")
     go.set_ylabel("Amplitude")
     go.grid(True)
     # st.pyplot(fig) 
@@ -40,6 +40,8 @@ def draw(time,y):
     st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")
 
 st.title("Signal Viewer App")
+
+st.sidebar.subheader("Navigation")
 
 tab1, tab2 = st.tabs(["Signal 1", "Signal 2"])
 
@@ -55,27 +57,27 @@ with tab1:
         # File upload
 
         uploaded_file = st.file_uploader(label="Upload your Signal",
-        type=['csv', 'xslx'])
+        type=['csv', 'xslx'], key=1)
 
-        snr = st.slider('Select SNR', 1, 30, key="1")
+        snr = st.slider('Select SNR', 1, 30, key=0)
 
     with col2:
         if uploaded_file is not None:
 
-            df = pd.read_csv(uploaded_file)
+            df = pd.read_csv(uploaded_file, nrows=250)
             
-            time = df['Time']
-            signal=df['Voltage']
+            time = df['time']
+            signal=df['signal']
 
-            low = df['Time'].tolist()
+            low = df['time'].tolist()
 
-            timeval = 'Time'
-            x_min = '-3'
-            x_max = '3'
+            timeval = 'time'
+            x_min = '0.02'
+            x_max = '0.06'
             y_min = '0.0000000000000022'
             y_max = '-0.0000000000000022'
-            voltage_value=['Voltage']
-            name1 = voltage_value[0]
+            signal_value=['signal']
+            name1 = signal_value[0]
             group1 = df[name1].tolist()
 
 
@@ -92,7 +94,7 @@ with tab1:
                         )
                     for k  in  range(1, len(group1)-1)] 
 
-            layout = go.Layout(width=800,
+            layout = go.Layout(width=900,
                             height=500,
                             showlegend=True,
                             hovermode='closest',
@@ -112,22 +114,7 @@ with tab1:
                                                                     mode='immediate')
                                                             ])
                                                     ])
-                                        ,dict(type='buttons', showactive=False,
-                                            y=0.55,
-                                            x=1.15,
-                                            xanchor='right',
-                                            yanchor='bottom',
-                                            pad=dict(t=0, r=10),
-                                            buttons=[dict(label='Stop',
-                                                        method='restyle',
-                                                        args=[None, 
-                                                                dict(frame=dict(duration=0.1, 
-                                                                                redraw=False),
-                                                                    transition=dict(duration=0),
-                                                                    fromcurrent=True,
-                                                                    mode='immediate')
-                                                            ])
-                                                    ])
+
                                         ],
                             )
 
@@ -155,27 +142,34 @@ with tab2:
     col1, col2 = st.columns([1,2])
 
     with col1:
-        st.write("Signal 2")
-        uploaded_file_2 = st.file_uploader(label="Upload Signal 2",
-        type=['csv', 'xslx'])
-        snr = st.slider('Select SNR', 1, 30, key="2")
+
+        # st.write("Signal 1")
+        # st.sidebar.subheader("Visulization Settings")
+
+        # File upload
+
+        uploaded_file = st.file_uploader(label="Upload your Signal",
+        type=['csv', 'xslx'],key=2)
+
+        snr = st.slider('Select SNR', 1, 30, key=0.1)
 
     with col2:
         if uploaded_file is not None:
-            df = pd.read_csv(uploaded_file_2)
 
-            time = df['Time']
-            signal=df['Voltage']
+            df = pd.read_csv(uploaded_file, nrows=250)
+            
+            time = df['time']
+            signal=df['signal']
 
-            low = df['Time'].tolist()
+            low = df['time'].tolist()
 
-            timeval = 'Time'
-            x_min = '-3'
-            x_max = '3'
+            timeval = 'time'
+            x_min = '0.02'
+            x_max = '0.06'
             y_min = '0.0000000000000022'
             y_max = '-0.0000000000000022'
-            voltage_value=['Voltage']
-            name1 = voltage_value[0]
+            signal_value=['signal']
+            name1 = signal_value[0]
             group1 = df[name1].tolist()
 
 
@@ -188,11 +182,11 @@ with tab2:
             frames = [dict(data= [dict(type='scatter',
                                     x=df[timeval][:k],
                                     y=group1[:k]),],
-                        traces= [0, 1],   
+                        traces= [0, 1],  # frames[k]['data'][0]  updates trace
                         )
                     for k  in  range(1, len(group1)-1)] 
 
-            layout = go.Layout(width=800,
+            layout = go.Layout(width=900,
                             height=500,
                             showlegend=True,
                             hovermode='closest',
@@ -212,30 +206,25 @@ with tab2:
                                                                     mode='immediate')
                                                             ])
                                                     ])
-                                        ,dict(type='buttons', showactive=False,
-                                            y=0.55,
-                                            x=1.15,
-                                            xanchor='right',
-                                            yanchor='bottom',
-                                            pad=dict(t=0, r=10),
-                                            buttons=[dict(label='Stop',
-                                                        method='restyle',
-                                                        args=[None, 
-                                                                dict(frame=dict(duration=0.1, 
-                                                                                redraw=False),
-                                                                    transition=dict(duration=0),
-                                                                    fromcurrent=True,
-                                                                    mode='immediate')
-                                                            ])
-                                                    ])
+                                        ,
                                         ],
                             )
+
             layout.update(xaxis =dict(range=[x_min, x_max], autorange=False),
                         yaxis =dict(range=[-3,3]), 
-                        title="Signal 2",
+                        title="Signal 1",
                         )
-            fig_2 = go.Figure(data=[trace], frames=frames, layout=layout)  
-        
-            st.write(fig_2)
+            fig_1 = go.Figure(data=[trace], frames=frames, layout=layout)  
+            # fig.add_annotation(text = (f"@reshamas / {today}<br>Source: JHU CSSE"), showarrow=False, x = 0, 
+            #                    y = -0.11, xref='paper', yref='paper', xanchor='left', yanchor='bottom', xshift=-3,
+            #                    yshift=-15, font=dict(size=10, color="grey"), align="left")
+
+
+            st.write(fig_1)
+
+
+            
+            # st.button('Add',addNoise(snr),'HZ')
             addNoise(snr)
+
                         
