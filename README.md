@@ -11,8 +11,8 @@
 #### -resize the signals without missing the UI
 ## technology used 
 ### python with streamlit
-# Team Members:
-Saeed Elsayed   
-## Maryam Megahed
-## Mazen Tarek
-## Neveen Mohamed
+## Team Members:
+### Saeed Elsayed   
+###  Maryam Megahed
+###  Mazen Tarek
+###  Neveen Mohamed
