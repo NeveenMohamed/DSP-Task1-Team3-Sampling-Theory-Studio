@@ -1,4 +1,2 @@
 signal_name,signal_type,signal_freq,signal_amp
-x,sin,60,15
-h,cos,37,50
-h,sin,22,19
+Sin,sin,17,43

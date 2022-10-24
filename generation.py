@@ -67,7 +67,7 @@ with col1:
 
   snr = st.slider('Select SNR', 1, 30, key=0)
   if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, nrows=250)
+    df = pd.read_csv(uploaded_file, nrows=1000)
     f,ax = init_plot()
 
     # converting column df to list
