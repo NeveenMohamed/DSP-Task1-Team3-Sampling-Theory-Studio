@@ -179,7 +179,7 @@ def main():
   #form to generate the signal with det. freq and amplitude -----------
   with col1:
     st.title("Generate Your Own Signal")
-    with st.form(key='df1', clear_on_submit=True):                                    #generate form with unique key called df1
+    with st.form(key='df1'):                                    #generate form with unique key called df1
        name_of_signal = st.text_input(label = "Enter the Signal Name")                      #pass the signal name from the user
        Type_of_signal= st.selectbox('Select The Signal Type', ['None','sin', 'cos'], key=1) #det the sugnal type
        frequency = st.slider("Enter the Frequency", min_value=0, max_value = 100 )          #det the frequency value by slider
