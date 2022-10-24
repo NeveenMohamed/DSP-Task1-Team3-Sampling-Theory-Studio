@@ -37,7 +37,7 @@ def addNoise(snr):
        noise=np.random.normal(mean_noise,np.sqrt(noise_watts),len(df['signal']))
        df['signal']=df['signal']+noise
        st.write("Signal with noise")
-       draw(time,df['signal'])
+       add_to_plot(ax,time,df['signal'],'r')
 
 def draw(time,y):
     d={'t':time,'y':y}
@@ -83,7 +83,7 @@ if uploaded_file is not None:
       signal_samples.append(df.iloc[:,1][i]) #take the value of the amplitude
   add_to_plot(ax, time_samples, signal_samples, 'ko') #draw the samples of time and f_amplitude as small black circles
 
-  show_plot(f) #show the drawing
+  # show_plot(f) #show the drawing
 
 
 # function that make the interpolation
@@ -119,7 +119,7 @@ def interpolate(time_domain, samples_of_time, samples_of_amplitude, left = None,
 
     return samples_of_amplitude_at_time_domain
 
-f,ax = init_plot()  # make a new graph to draw in it
+# f,ax = init_plot()  # make a new graph to draw in it
 
 time_domain = np.linspace(0, max(time), Number_Of_Samples)  # the domain we want to draw the recounstructed signal in it
 ans = interpolate(time_domain, time_samples, signal_samples) # result of reconstruction
