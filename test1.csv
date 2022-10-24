@@ -1,4 +1,10 @@
 signal_name,signal_type,signal_freq,signal_amp
-SIG1,cos,30,28
-SIG2,sin,38,14
-111,sin,21,49
+SIG1,sin,3,12
+,None,7,7
+,None,0,28
+,None,32,25
+SIG2,None,22,20
+,None,8,38
+,None,82,31
+,None,44,25
+,None,52,26

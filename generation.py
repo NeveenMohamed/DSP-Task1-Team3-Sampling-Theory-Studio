@@ -1,19 +1,18 @@
 #requred libraries --------------------------------------------------
-from cProfile import label
+from asyncio.windows_events import NULL
+from operator import index
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd 
+import pandas as pd
 import plotly.tools as tls
 
-
+st.set_page_config(layout="wide")
 
 # CSV Folder Path For Signal Information
 file_dir = r'C:\Users\Mazen Tarek\Desktop\DSP-Task-1-webApplication-signalViewer'
 file_name = 'test1.csv'
 filepath = f"{file_dir}/{file_name}"
-
-st.set_page_config(layout="wide")
 
 
 # function to implement the grid and the interfacing of signal plotting
@@ -31,24 +30,25 @@ def init_plot():
 
 
 #function to pass the needed parameters for plotting
-def add_to_plot(ax,x,y,colour,label):
-  ax.plot(x,y,colour, alpha=0.7, linewidth=2, label=label)  # 'b' express the blue color , alpha represent the brightness of the line
+
+def add_to_plot(ax,x,y,colour):
+  ax.plot(x,y,colour,alpha=0.7,linewidth=2)  # 'b' express the blue color , alpha represent the brightness of the line
 
 #function to show the plotting signal
 def show_plot(f):
-  plotly_fig = tls.mpl_to_plotly(f)
-  # st.pyplot(f) 
-  st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit", label=label)       
+  st.pyplot(f)        
 
 #our main function
 def main():
   
   #read the csv files from the pc
   df1 = pd.read_csv(filepath)
-
-
+  
+  col1, col2 = st.columns([1,2])
   #form to generate the signal with det. freq and amplitude -----------
-  with st.sidebar.form(key='df1', clear_on_submit=True):                                    #generate form with unique key called df1
+  with col1:
+    st.title("Generate Your Own Signal")
+    with st.form(key='df1', clear_on_submit=True):                                    #generate form with unique key called df1
        name_of_signal = st.text_input(label = "Enter the Signal Name")                      #pass the signal name from the user
        Type_of_signal= st.selectbox('Select The Signal Type', ['None','sin', 'cos'], key=1) #det the sugnal type
        frequency = st.slider("Enter the Frequency", min_value=0, max_value = 100 )          #det the frequency value by slider
@@ -60,23 +60,21 @@ def main():
           new_data = {'signal_name': name_of_signal, 'signal_type': Type_of_signal, 'signal_freq': frequency, 'signal_amp': amplitude}
           df1 = df1.append(new_data, ignore_index=True)      #add the new information from the user to the csv file 
           df1.to_csv(filepath, index=False)
-  
   #signal generation---------------------------------------------------
-  st.title("Generate Your Own Signal")
-  #variables defintion ------------------------------------------------
-  signal_values = []                 #list to save the signal values along y axis
-  dt = 0.01                          # time step
-  phi = 0                            # phase accumulator
-  phase=[]                           #list to save the omega values along the time domain
-  c=[]                       
-  signal_name = df1['signal_name'].tolist()     #import the signal names from the csv file into a list
-  signal_type = df1['signal_type'].tolist()     #import the signal type from the csv file into a list
-  signal_freq = df1['signal_freq'].tolist()     #import the freq values into a list
-  signal_amp = df1['signal_amp'].tolist()       #import the amp values into a list
-  x=np.arange(0,1,0.01)              # x axis domain from 0 to 1 and with step 0.01
-  colours=['r','g','b']              # list of coloue=rs used to draw the signals
-  color_index=0                      # init the index value for the colours list
 
+  #variables defintion ------------------------------------------------
+  signal_values = []                            #list to save the signal values along y axis
+  dt = 0.01                                     # time step
+  phi = 0                                       # phase accumulator
+  phase=[]                                      #list to save the omega values along the time domain
+  c=[]                       
+  signal_name = df1['signal_name']              #import the signal names from the csv file into a list
+  signal_type = df1['signal_type']              #import the signal type from the csv file into a list
+  signal_freq = df1['signal_freq']              #import the freq values into a list
+  signal_amp = df1['signal_amp']                #import the amp values into a list
+  x=np.arange(0,1,0.01)                         # x axis domain from 0 to 1 and with step 0.01
+  colours=['r','g','b']                         # list of coloue=rs used to draw the signals
+  color_index=0                                 # init the index value for the colours list
 
 
 
@@ -98,19 +96,19 @@ def main():
       phi=phi+phase[n]                          #implement the omega t within the time domain
     signal_values.append(c)
     c=[]
-    add_to_plot(ax,x,signal_values[n],colours[color_index],signal_name[n])
-    color_index=(color_index+1)%3
 
-  show_plot(f) 
+#function to implement the sum of the signal values(y-axis) within the x-axis
 
-#function to implement the sum of the signal values(y-axis) within the x-axis 
   f,ax=init_plot()                                      #init a new grid to plot the sum of the signals
   sum_of_signal_values=np.zeros(len(signal_values[0]))  #array of zeros to add the list in it   
   for i in range(len(signal_values)): 
     sum_of_signal_values+=np.array(signal_values[i])    #transmit the values in the array   
+  color_index=(color_index+1)%3
+  add_to_plot(ax,x,sum_of_signal_values,colours[color_index])      
+  plotly_fig = tls.mpl_to_plotly(f)
+  with col2:
+    st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")
 
-  add_to_plot(ax,x,sum_of_signal_values,'b','sum')      
-  show_plot(f)
 
 if __name__ == '__main__':
 	main()  
