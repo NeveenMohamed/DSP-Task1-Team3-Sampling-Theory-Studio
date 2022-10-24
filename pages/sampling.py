@@ -1,3 +1,4 @@
+from email.policy import default
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,7 +6,7 @@ import numpy as np
 import plotly.tools as tls
 
 def add_to_plot(ax,time,f_amplitude, shape):
-  ax.plot( time , f_amplitude, shape, alpha=0.7, linewidth=2)  # 'shape' express the color or the shape , alpha represent the brightness of the line
+  ax.plot( time , f_amplitude, shape, alpha=0.7, linewidth=2)  # 'shape' express the color or the shape , alpha represent the brightness of the line
             
 def show_plot(f):
     plotly_fig = tls.mpl_to_plotly(f)     
@@ -24,24 +25,56 @@ def init_plot():
   
   return f,ax
 
+global time,signal
+def addNoise(snr):
+       power=df['signal']**2
+       snr_dp=snr
+       signal_average_power=np.mean(power)
+       signal_averagepower_dp=10*np.log10(signal_average_power)
+       noise_dp=signal_averagepower_dp-snr_dp
+       noise_watts=10**(noise_dp/10)
+       mean_noise=0
+       noise=np.random.normal(mean_noise,np.sqrt(noise_watts),len(df['signal']))
+       df['signal']=df['signal']+noise
+       st.write("Signal with noise")
+       draw(time,df['signal'])
+
+def draw(time,y):
+    d={'t':time,'y':y}
+    signal=pd.DataFrame(data=d)
+    fig,go=plt.subplots()
+    go.plot(signal.iloc[:,0],signal.iloc[:,1])
+    go.set_title("Signal Digram")
+    go.set_xlabel("time")
+    go.set_ylabel("Amplitude")
+    go.grid(True)
+    # st.pyplot(fig) 
+    # st.write(fig)
+    plotly_fig = tls.mpl_to_plotly(fig)
+    # st.write(plotly_fig)
+    st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")       
+
+
 # read the df from the csv file and store it in variable named df
 # df = pd.read_csv("1_2.csv",nrows=250) #read only the firt nrows row from the file 
 uploaded_file = st.file_uploader(label="Upload your Signal",
         type=['csv', 'xslx'])
 
+snr = st.slider('Select SNR', 1, 30, key=0)
 if uploaded_file is not None:
   df = pd.read_csv(uploaded_file, nrows=250)
-  time = df['time']
   f,ax = init_plot()
 
   # converting column df to list
-  time = df['time'].tolist() # time will carry the values of the time 
-  f_amplitude = df['signal'].tolist() # f_amplitude will carry the values of the amplitude of the signal
+  time = df['time'] # time will carry the values of the time 
+  signal=df['signal'] # f_amplitude will carry the values of the amplitude of the signal
   #plt.plot(time,f_amplitude) #draw time and f_amplitude
-  add_to_plot(ax, time, f_amplitude, 'c')  #draw time and f_amplitude      'c': the wanted color
+  addNoise(snr)  #draw time and f_amplitude      'c': the wanted color
   # show_plot(f)   #show the drawing
 
 
+
+  
   Number_Of_Samples = st.slider('Enter the number of samples required', min_value= 2, max_value =len(df))  #number of samples we want to take from the df
   time_samples = [] # the list which will carry the values of the samples of the time
   signal_samples = [] # the list which will carry the values of the samples of the amplitude
@@ -56,13 +89,10 @@ if uploaded_file is not None:
 # function that make the interpolation
 def interpolate(time_domain, samples_of_time, samples_of_amplitude, left = None, right = None):
     """One-dimensional Whittaker-Shannon interpolation.
-
     This uses the Whittaker-Shannon interpolation formula to interpolate the
     value of samples_of_amplitude (array), which is defined over samples_of_time (array), at time_domain (array or
     float).
-
     Returns the interpolated array with dimensions of time_domain.
-
     """
     scalar = np.isscalar(time_domain)
     if scalar:

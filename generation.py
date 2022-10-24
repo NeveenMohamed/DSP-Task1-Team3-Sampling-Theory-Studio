@@ -1,9 +1,12 @@
 #requred libraries --------------------------------------------------
+from cProfile import label
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd 
 import plotly.tools as tls
+
+
 
 # CSV Folder Path For Signal Information
 file_dir = r'C:\Users\Mazen Tarek\Desktop\DSP-Task-1-webApplication-signalViewer'
@@ -35,7 +38,7 @@ def add_to_plot(ax,x,y,colour,label):
 def show_plot(f):
   plotly_fig = tls.mpl_to_plotly(f)
   # st.pyplot(f) 
-  st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit")       
+  st.plotly_chart(plotly_fig, use_container_width=True, sharing="streamlit", label=label)       
 
 #our main function
 def main():
