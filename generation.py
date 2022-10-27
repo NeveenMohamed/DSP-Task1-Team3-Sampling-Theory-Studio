@@ -13,8 +13,15 @@ import plotly.tools as tls
 
 st.set_page_config(layout="wide")
 
-with open ('style.css') as f:
-  st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
+
 
 
 def interpolate(time_domain, samples_of_time, samples_of_amplitude, left = None, right = None):
