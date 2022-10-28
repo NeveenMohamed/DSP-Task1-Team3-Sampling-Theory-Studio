@@ -1,3 +1,4 @@
 signal_name,signal_type,signal_freq,signal_amp
-Sin,sin,47,53
-lm,cos,27,51
+sin2,sin,2,5
+sin2,sin,2,5
+sin6,sin,6,5

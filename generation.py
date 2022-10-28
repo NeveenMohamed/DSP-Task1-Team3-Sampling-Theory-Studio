@@ -117,7 +117,7 @@ with col1:
     add_to_plot(ax, time_samples, signal_samples, 'ko') #draw the samples of time and f_amplitude as small black circles
   else:
        # CSV Folder Path For Signal Information
-    file_dir = r'C:\Users\Mazen Tarek\Desktop\DSP-Task-1-webApplication-signalViewer'
+    file_dir = r'C:\Users\EGYPT\Downloads\dsp_task1\DSP-Task-1-webApplication-signalViewer_-TEAM-3-'
     file_name = 'test1.csv'
     filepath = f"{file_dir}/{file_name}"
 
@@ -224,7 +224,19 @@ with col1:
       time_domain = np.linspace(0, max_of_time, (Number_Of_Samples*(ceil(max_of_time))))  # the domain we want to draw the recounstructed signal in it
       ans = interpolate(time_domain, time_samples, signal_samples) # result of reconstruction
       add_to_plot(ax, time_domain, ans, 'c')  #draw the reconstructed signal   'c': the wanted color in BLUEEEEEEEEE
-    
+      
+      def convert_df(dff):
+          # IMPORTANT: Cache the conversion to prevent computation on every rerun
+          return dff.to_csv().encode('utf-8')
+      data = {'time':time_domain,'signal':ans}
+      dff = pd.DataFrame(data)
+      csv = convert_df(dff)
+      st.download_button(
+          label="Download reconstructed data",
+          data=csv,
+          file_name='large_df.csv',
+          mime='text/csv',
+      )
     
   
     show_plot(f)   #show the drawing
