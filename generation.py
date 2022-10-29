@@ -249,8 +249,12 @@ with col1:
           file_name='large_df.csv',
           mime='text/csv',
       )
-    
-  
+    else:
+      delete = st.selectbox("Select signal to be removed",signal_name)
+      delete_button=st.button(label="delete")
+      if delete_button:
+        df1 =  df1[df1.signal_name != delete] 
+        df1.to_csv(filepath, index=False)
     show_plot(f)   #show the drawing
 
 # function that make the interpolation
