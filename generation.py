@@ -117,7 +117,7 @@ with col1:
     add_to_plot(ax, time_samples, signal_samples, 'ko') #draw the samples of time and f_amplitude as small black circles
   else:
        # CSV Folder Path For Signal Information
-    file_dir = r'C:\Users\EGYPT\Downloads\dsp_task1\DSP-Task-1-webApplication-signalViewer_-TEAM-3-'
+    file_dir = r'C:\Users\Mazen Tarek\Desktop\DSP-Task-1-webApplication-signalViewer'
     file_name = 'test1.csv'
     filepath = f"{file_dir}/{file_name}"
 
@@ -214,6 +214,18 @@ with col1:
     
 
     add_to_plot(ax,time,sum_of_signal_values,colours[color_index])  
+    def convert_df(dff):
+        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+        return dff.to_csv().encode('utf-8')
+    data = {'time':time,'signal':sum_of_signal_values}
+    dff = pd.DataFrame(data)
+    csv = convert_df(dff)
+    st.download_button(
+        label="Download reconstructed data",
+        data=csv,
+        file_name='large_df.csv',
+        mime='text/csv',
+    )
     # plotly_fig = tls.mpl_to_plotly(f) 
   with col2:
     plotly_fig = tls.mpl_to_plotly(f) 
