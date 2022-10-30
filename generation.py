@@ -275,23 +275,6 @@ with col1:
     add_to_plot(ax, time, ans, 'c', label='Reconstructed Signal')  #draw the reconstructed signal   'c': the wanted color in BLUE
     
     
-<<<<<<< Updated upstream
-
-    add_to_plot(ax,time,sum_of_signal_values,colours[color_index])  
-    # plotly_fig = tls.mpl_to_plotly(f) 
-  with col2:
-    plotly_fig = tls.mpl_to_plotly(f) 
-
-
-    # f,ax = init_plot()  # make a new graph to draw in it
-    if uploaded_file is not None:
-      time_domain = np.linspace(0, max_of_time, (Number_Of_Samples*(ceil(max_of_time))))  # the domain we want to draw the recounstructed signal in it
-      ans = interpolate(time_domain, time_samples, signal_samples) # result of reconstruction
-      add_to_plot(ax, time_domain, ans, 'c')  #draw the reconstructed signal   'c': the wanted color in BLUEEEEEEEEE
-    
-    
-  
-=======
     
     if len(signal_name)!=0:
       add_to_plot(ax,time,sum_of_signal_values,'y', label='Original Signal')  
@@ -323,7 +306,6 @@ with col1:
         df1 =  df1[df1.signal_name != delete] 
         df1.to_csv(filepath, index=False)
         
->>>>>>> Stashed changes
     show_plot(f)   #show the drawing
 
 # function that make the interpolation
