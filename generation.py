@@ -308,7 +308,6 @@ with col1:
         
     show_plot(f)   #show the drawing
 
-# function that make the interpolation
 
 
 

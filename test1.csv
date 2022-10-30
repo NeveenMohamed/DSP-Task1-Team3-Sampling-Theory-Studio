@@ -1,8 +1,3 @@
 signal_name,signal_type,signal_freq,signal_amp
-<<<<<<< Updated upstream
-Sin,sin,47,53
-lm,cos,27,51
-=======
-signal0,sin,31,50
-signal1,sin,31,50
->>>>>>> Stashed changes
+signal0,cos,54,40
+signal1,cos,54,40
