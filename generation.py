@@ -23,8 +23,8 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 
-
-def interpolate(time_domain, samples_of_time, samples_of_amplitude, left = None, right = None):
+# interpolation function 
+def interpolate(time_domain, samples_of_time, samples_of_amplitude, left = None, right = None):  
     scalar = np.isscalar(time_domain)
     if scalar:
         time_domain = np.array(time_domain)
@@ -71,7 +71,7 @@ def init_plot():
     ax.spines[spine].set_visible(False)
   return f,ax
 
-global time,signal
+global time,signal    
 def addNoise(snr):
        power=df['signal']**2
        snr_dp=snr
@@ -88,27 +88,26 @@ def addNoise(snr):
 
 col1, col2 = st.columns([1,3])
 with col1:
-  # read the df from the csv file and store it in variable named df
-  # df = pd.read_csv("1_2.csv",nrows=250) #read only the firt nrows row from the file 
+  
   uploaded_file = st.file_uploader(label="Upload your Signal",
           type=['csv', 'xslx'])
 
-  snr = st.slider('Select SNR', 1, 50, key=0, value=50)
+  snr = st.slider('Select SNR', 1, 50, key=0, value=50)    #choose the ratio of signal to noise
   if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, nrows=1000)
+    df = pd.read_csv(uploaded_file, nrows=1000) # read the df from the csv file and store it in variable named df with maximum rows = nrows 
     f,ax = init_plot()
 
-    # converting column df to list
+    
     time = df['time'] # time will carry the values of the time 
-    signal=df['signal'] # f_amplitude will carry the values of the amplitude of the signal
-    #plt.plot(time,f_amplitude) #draw time and f_amplitude
-    addNoise(snr)  #draw time and f_amplitude      'c': the wanted color
+    signal=df['signal'] # signal will carry the values of the amplitude of the signal
+    
+    addNoise(snr)  #draw time and signal after adding the required noise     
     # show_plot(f)   #show the drawing
 
 
-    max_of_time = (max(time))
+    max_of_time = (max(time))     #store the max value of the time in a variable
     
-    Number_Of_Samples = st.slider('Enter the number of samples required', min_value= 2, max_value =int(len(df)/(ceil(max_of_time))))  #number of samples we want to take from the df
+    Number_Of_Samples = st.slider('number of samples required per second', min_value= 2, max_value =int(len(df)/(ceil(max_of_time))))  #number of samples we want to take from the df
     time_samples = [] # the list which will carry the values of the samples of the time
     signal_samples = [] # the list which will carry the values of the samples of the amplitude
     for i in range(0, df.shape[0], df.shape[0]//(Number_Of_Samples*(ceil(max_of_time)))): #take only the specific Number_Of_Samples from the df
@@ -198,7 +197,7 @@ with col1:
     signals=df['signal']
 
 
-    max_of_time = (max(time))
+    max_of_time = (max(time))   #store the max value of the time in a variable
     
     Number_Of_Samples = st.slider('Enter the number of samples required', min_value= 2, max_value =int(len(df)/(ceil(max_of_time))))  #number of samples we want to take from the df
     time_samples = [] # the list which will carry the values of the samples of the time
@@ -210,17 +209,18 @@ with col1:
     ans = interpolate(time, time_samples, signal_samples) # result of reconstruction
     add_to_plot(ax, time, ans, 'c')  #draw the reconstructed signal   'c': the wanted color in BLUEEEEEEEEE
     
-    addNoise(snr)
+    addNoise(snr)  #draw time and signal after adding the required noise
     
 
     add_to_plot(ax,time,sum_of_signal_values,colours[color_index])  
+    # function to converts the dataframe into csv 
     def convert_df(dff):
-        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+       
         return dff.to_csv().encode('utf-8')
-    data = {'time':time,'signal':sum_of_signal_values}
-    dff = pd.DataFrame(data)
-    csv = convert_df(dff)
-    st.download_button(
+    data = {'time':time,'signal':sum_of_signal_values}  # make the name of the two colums time and signal
+    dff = pd.DataFrame(data)  
+    csv = convert_df(dff)     #convert the dataframe into csv 
+    st.download_button(   #download button to download the reconstructed signal
         label="Download reconstructed data",
         data=csv,
         file_name='large_df.csv',
@@ -237,13 +237,14 @@ with col1:
       ans = interpolate(time_domain, time_samples, signal_samples) # result of reconstruction
       add_to_plot(ax, time_domain, ans, 'c')  #draw the reconstructed signal   'c': the wanted color in BLUEEEEEEEEE
       
+      # function to converts the dataframe into csv
       def convert_df(dff):
-          # IMPORTANT: Cache the conversion to prevent computation on every rerun
+          
           return dff.to_csv().encode('utf-8')
-      data = {'time':time_domain,'signal':ans}
+      data = {'time':time_domain,'signal':ans}  # make the name of the two colums time and signal
       dff = pd.DataFrame(data)
-      csv = convert_df(dff)
-      st.download_button(
+      csv = convert_df(dff)   #convert the dataframe into csv 
+      st.download_button(   #download button to download the reconstructed signal
           label="Download reconstructed data",
           data=csv,
           file_name='large_df.csv',
