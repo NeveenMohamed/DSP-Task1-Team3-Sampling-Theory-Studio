@@ -1,9 +1,7 @@
 #requred libraries --------------------------------------------------
-from cmath import phase
 import csv
 from itertools import zip_longest
 from math import ceil
-from turtle import color
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -86,7 +84,7 @@ def interpolate(time_domain, samples_of_time, samples_of_amplitude):
 #matrix 2 columns with time domain values 
     resizing = np.resize(time_domain, (len(samples_of_time), len(time_domain)))
 #subtract the sample time within the time doamin from the 2 columns
-    pre_interpolation = (samples_of_time - resizing.T) / (samples_of_time[1] - samples_of_time[0])
+    pre_interpolation = (resizing.T - samples_of_time) / (samples_of_time[1] - samples_of_time[0])
 #get the sinc value for each value in the resizing matrix so within 0 the value will be 1 and for large values it will be zero then multiply these values with its real amplitudes    
     interpolation = samples_of_amplitude * np.sinc(pre_interpolation)
 #get the sum of the columns within one column only with the required data        
@@ -160,7 +158,7 @@ with col1:
     f,ax=init_plot()
 
     #read and prepare the uploded signal data to be plot--------------------------------
-    df = pd.read_csv(uploaded_file, nrows=1000)    # read the df from the csv file and store it in variable named df
+    df = pd.read_csv(uploaded_file, nrows=1500)    # read the df from the csv file and store it in variable named df
     time = df['time']                              # time will carry the values of the time 
     signal=df['signal']                            # f_amplitude will carry the values of the amplitude of the signal
 
@@ -215,13 +213,13 @@ with col1:
 
     #variables defintion ------------------------------------------------
     signal_values = []                            #list to save the signal values along y axis
-    dt = 0.01                                     # time step
+    dt = 0.005                                     # time step
     c=[]                                          #list to restore each signal_amp_data
     signal_name = df1['signal_name']              #import the signal names from the csv file into a list
     signal_type = df1['signal_type']              #import the signal type from the csv file into a list
     signal_freq = df1['signal_freq']              #import the freq values into a list
     signal_amp = df1['signal_amp']                #import the amp values into a list
-    time=np.arange(0,1,0.01)                         # x axis domain from 0 to 1 and with step 0.01
+    time=np.arange(0,1,dt)                         # x axis domain from 0 to 1 and with step 0.01
     
     
     #The generated Form---------------------------------------------------
