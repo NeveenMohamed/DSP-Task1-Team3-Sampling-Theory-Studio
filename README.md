@@ -26,6 +26,15 @@ reconstructing the signal
 ![Screenshot 2022-11-01 181215](https://user-images.githubusercontent.com/92316869/199282014-4d7f8b9c-166c-4c04-89a6-88eda4bd3a14.png)
 adding noise to the generated signal
 ![Screenshot 2022-11-01 181526](https://user-images.githubusercontent.com/92316869/199282599-b53323a2-40ee-48dd-8269-daccc74a6c5b.png)
+reconstructing the signal with its noise by Nyquist rate
+![Screenshot 2022-11-01 181718](https://user-images.githubusercontent.com/92316869/199283137-6d368efd-47a2-4617-929f-27f9aa547375.png)
+uploading ECG signal
+![Screenshot 2022-11-01 182117](https://user-images.githubusercontent.com/92316869/199285467-4fbcf781-1a7d-4ac9-8beb-827ce235b639.png)
+reconstructing the ECG signal
+![Screenshot 2022-11-01 183534](https://user-images.githubusercontent.com/92316869/199287196-d3df19af-fa2c-4ca6-ac69-3f2aa65b0ce1.png)
+
+
+
 
 
 
