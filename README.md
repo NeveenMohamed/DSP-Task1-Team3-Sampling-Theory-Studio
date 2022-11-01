@@ -3,15 +3,19 @@
 ### sampling an analog signal is a crucial step for any digital signal processing system The Nyquist–Shannon sampling theorem guarantees a full recovery of the signal when sampling with a frequency larger than or equal to the bandwidth of the signal (or double the maximum frequency in case of real signals).
 ## Description 
 ### It is a web application that illustrates the signal sampling and recovery showing the importance and validation of the nyquist rate
-### Our application have the following features:
-  #### -> Visualize and sample an uploaded signal and use the sampled points to recover the original signal
-  #### -> Adding noise to the loaded signal and reconstructing it
-  #### -> Prepare mixed signal by adding sinusoidal signals with different frequancy and magnitudes 
-  #### -> Sampling and reconstructing the mixed signal
-  #### -> Adding noise to the mixed signal and reconstructing it
-  #### -> Remove any component from the mixed signal
-  #### -> Downloading the reconstructed signal 
-  #### -> Resize the signals without missing the UI
+
+Markup : * Our application have the following features:
+              * Visualize and sample an uploaded signal and use the sampled points to recover the original signal
+
+
+#### -> 
+#### -> Adding noise to the loaded signal and reconstructing it
+#### -> Prepare mixed signal by adding sinusoidal signals with different frequancy and magnitudes 
+#### -> Sampling and reconstructing the mixed signal
+#### -> Adding noise to the mixed signal and reconstructing it
+#### -> Remove any component from the mixed signal
+#### -> Downloading the reconstructed signal 
+#### -> Resize the signals without missing the UI
 ## Technology used 
 ### Python with streamlit
 ## Task Info
@@ -22,9 +26,9 @@
 
 | Name | SEC | BN |
 |------|-----|----|
-| Saeed Elsayed | 1 | 42 | 
-| Maryam Megahed | 2 | 32 |
+| Saeed Elsayed | 1 | 42 |
 | Mazen Tarek | 2 | 13 |
+| Maryam Megahed | 2 | 32 |
 | Neveen Mohamed | 2 | 49 | 
 
 ## Screenshots of the web app
