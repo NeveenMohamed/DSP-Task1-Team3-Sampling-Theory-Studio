@@ -22,8 +22,7 @@
 
 | Name | SEC | BN |
 |------|-----|----|
-####   &nbsp                       
-####  Saeed Elsayed      1         42
+|Saeed Elsayed| 1 | 42|                  
 ####  Maryam Megahed     2         32
 ####  Mazen Tarek        2         13
 ####  Neveen Mohamed     2         49
