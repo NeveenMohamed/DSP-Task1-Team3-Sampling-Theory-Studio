@@ -4,19 +4,26 @@
 ## description 
 ### it is a web application that illustrates the signal sampling and recovery showing the importance and validation of the nyquist rate
 ### Our application have the following features:
-#### -> visualize and sample a signal and use the sampled points to recover the original signal
-#### -> prepare mixed signal by adding sinusoidal signals with different frequancy and magnitudes 
-#### -> remove any component from the mixed signal
-#### -> adding noise to the loaded signal 
-#### -> resize the signals without missing the UI
-## technology used 
+#### -> Visualize and sample a signal and use the sampled points to recover the original signal
+#### -> Prepare mixed signal by adding sinusoidal signals with different frequancy and magnitudes 
+#### -> Remove any component from the mixed signal
+#### -> Adding noise to the loaded signal 
+#### -> Resize the signals without missing the UI
+## Technology used 
 ### python with streamlit
 ## Team Members:
-#### Name        
-#### Saeed Elsayed   
-####  Maryam Megahed
-####  Mazen Tarek
-####  Neveen Mohamed
+#### Name              SEC        BN       
+#### Saeed Elsayed      1         42
+####  Maryam Megahed    2         32
+####  Mazen Tarek       2         13
+####  Neveen Mohamed    2         49
+## Course
+#### Digital signal processing
+## Semester
+#### First semester
+## Date
+#### 1/11/2022
+
 
 ## Screenshots of the web app
 generating sin wave with frequency 4hz and amplitude 2v 
