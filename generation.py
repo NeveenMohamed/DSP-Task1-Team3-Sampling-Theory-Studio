@@ -158,7 +158,7 @@ with col1:
     f,ax=init_plot()
 
     #read and prepare the uploded signal data to be plot--------------------------------
-    df = pd.read_csv(uploaded_file, nrows=10000)    # read the df from the csv file and store it in variable named df
+    df = pd.read_csv(uploaded_file, nrows=1000)    # read the df from the csv file and store it in variable named df
     time = df['time']                              # time will carry the values of the time 
     signal=df['signal']                            # f_amplitude will carry the values of the amplitude of the signal
 
@@ -174,7 +174,7 @@ with col1:
     Number_Of_Samples = st.slider('Sampling Rate', min_value= 2, max_value =int(len(df)/(ceil(max_of_time))))  #number of samples we want to take from the df 
     time_samples = []                                # the list which will carry the values of the samples of the time
     signal_samples = []                              # the list which will carry the values of the samples of the amplitude
-    for i in range(0, df.shape[0], df.shape[0]//(Number_Of_Samples*(ceil(max_of_time)))): #take only the specific Number_Of_Samples from the df
+    for i in range(1, df.shape[0], df.shape[0]//(Number_Of_Samples*(ceil(max_of_time)))): #take only the specific Number_Of_Samples from the df
         time_samples.append(df.iloc[:,0][i])         # take the value of the time
         signal_samples.append(df.iloc[:,1][i])       #take the value of the amplitude
     add_to_plot(ax, time_samples, signal_samples, 'ko', label='Number of Samples')  #draw the samples of time and f_amplitude as small black circles
@@ -225,8 +225,8 @@ with col1:
     #The generated Form---------------------------------------------------
     with st.form(key='df1'):                                                              #generate form with unique key called df1
       Type_of_signal= st.selectbox('Signal Type', ['sin', 'cos'], key=1) #det the signal type
-      frequency = st.slider("Frequency", min_value=1, max_value = 100, value=1 )          #det the frequency value by slider
-      amplitude = st.slider("Amplitude", min_value=1, max_value = 100 , value=1)          #det the amplitudes value by slider
+      frequency = st.slider("Frequency", min_value=1, max_value = 30, value=1 )          #det the frequency value by slider
+      amplitude = st.slider("Amplitude", min_value=1, max_value = 30 , value=1)          #det the amplitudes value by slider
       submit= st.form_submit_button(label = "Submit")                                      #submit to save the data in cache memory
 
       #update the list of signals information------------------------------
@@ -278,12 +278,19 @@ with col1:
     max_of_time = (max(time))
     if len(signal_name)!= 0:
       
-      multiplication_of_fmax = st.slider('Sampling with fmax', min_value= 0.1, max_value =6.0, step =0.1)  #number of samples we want to take from the df
-      Number_Of_Samples = multiplication_of_fmax *max(signal_freq)
-      Number_Of_Samples = ceil(Number_Of_Samples)
+      check_box=st.checkbox('Sampling frequency', value=False, disabled=False)
+      if check_box:
+            Number_Of_Samples = st.slider('Sampling Rate', min_value= 2, max_value =int(len(signals_data_frame)/(ceil(max_of_time))))  #number of samples we want to take from the df 
+      else:
+            multiplication_of_fmax = st.slider('Sampling with fmax', min_value= 0.1, max_value =6.0, step =0.1)  #number of samples we want to take from the df
+      if check_box:
+            Number_Of_Samples = Number_Of_Samples
+      else:  
+            Number_Of_Samples = multiplication_of_fmax *max(signal_freq)
+            Number_Of_Samples = ceil(Number_Of_Samples)
       time_samples = []                                # the list which will carry the values of the samples of the time
       signal_samples = []                              # the list which will carry the values of the samples of the amplitude
-      for i in range(0, df.shape[0], df.shape[0]//((Number_Of_Samples+1)*(ceil(max_of_time)))):                      #take only the specific Number_Of_Samples from the df
+      for i in range(1, df.shape[0], df.shape[0]//((Number_Of_Samples)*(ceil(max_of_time)))):                      #take only the specific Number_Of_Samples from the df
           time_samples.append(df.iloc[:,0][i])         # take the value of the time
           signal_samples.append(df.iloc[:,1][i])       #take the value of the amplitude
       add_to_plot(ax, time_samples, signal_samples, 'ko', label='Number of Samples')                             #draw the samples of time and f_amplitude as small black circles    
