@@ -4,8 +4,8 @@
 ## Description 
 ### It is a web application that illustrates the signal sampling and recovery showing the importance and validation of the nyquist rate
 
-Markup : * Our application have the following features:
-              * Visualize and sample an uploaded signal and use the sampled points to recover the original signal
+* Our application have the following features:
+    * Visualize and sample an uploaded signal and use the sampled points to recover the original signal
 
 
 #### -> 
