@@ -130,7 +130,7 @@ def addNoise(snr):
        noise=np.random.normal(mean_noise,np.sqrt(noise_watts),len(df['signal']))
        df['signal']=df['signal']+noise
        ax.plot(label='Signal with noise')
-       add_to_plot(ax,time,df['signal'],'r', label='Signal with noise')
+       add_to_plot(ax,time,df['signal'],'y', label='Signal with noise')
 
 
 
@@ -158,7 +158,7 @@ with col1:
     f,ax=init_plot()
 
     #read and prepare the uploded signal data to be plot--------------------------------
-    df = pd.read_csv(uploaded_file, nrows=1500)    # read the df from the csv file and store it in variable named df
+    df = pd.read_csv(uploaded_file, nrows=10000)    # read the df from the csv file and store it in variable named df
     time = df['time']                              # time will carry the values of the time 
     signal=df['signal']                            # f_amplitude will carry the values of the amplitude of the signal
 
@@ -182,7 +182,7 @@ with col1:
 
 
     #draw the reconstracted data---------------------------------------------------------
-    time_domain = np.linspace(0, max_of_time, (Number_Of_Samples*(ceil(max_of_time))))  # the domain we want to draw the recounstructed signal in it
+    time_domain = np.linspace(0, max_of_time, 10000)  # the domain we want to draw the recounstructed signal in it
     ans = interpolate(time_domain, time_samples, signal_samples)                        # result of reconstruction
     add_to_plot(ax, time_domain, ans, 'c', label="Constructed Signal")                   #draw the reconstructed signal  
 
@@ -192,7 +192,7 @@ with col1:
     def convert_df(df_download):
       return df_download.to_csv().encode('utf-8') #strings are stored as Unicode,each string is just a sequence of Unicode code points, encoding is the process of putting a sequence of characters into a specialized format for efficient transmission or storage. 
 
-    data = {'time':time,'signal':df['signal']}    #define the columns data 
+    data = {'time':time_domain,'signal':ans}    #define the columns data 
     df_download = pd.DataFrame(data)              #convert the data to df 
     csv = convert_df(df_download)                 #download the data after encoding
     st.download_button(label="Download reconstructed data", data=csv, file_name='large_df.csv',mime='text/csv')
@@ -204,7 +204,7 @@ with col1:
   else:
     st.write("Generate Your Own Signal")
     # CSV Folder Path For Signal Information
-    file_dir = r'C:\Users\HP Probook\Documents\GitHub\DSP-Task-1-webApplication-signalViewer'
+    file_dir = r'C:\Users\EGYPT\Downloads\dsp_task1\DSP-Task-1-webApplication-signalViewer_-TEAM-3-'
     file_name = 'test1.csv'
     filepath = f"{file_dir}/{file_name}"
 
@@ -215,7 +215,7 @@ with col1:
     signal_values = []                            #list to save the signal values along y axis
     dt = 0.005                                     # time step
     c=[]                                          #list to restore each signal_amp_data
-    time=np.arange(0,1,dt)                         # x axis domain from 0 to 1 and with step 0.01
+    time=np.arange(0,6,dt)                         # x axis domain from 0 to 1 and with step 0.01
     signal_name = []
     signal_type = []
     signal_freq = []
@@ -225,8 +225,8 @@ with col1:
     #The generated Form---------------------------------------------------
     with st.form(key='df1'):                                                              #generate form with unique key called df1
       Type_of_signal= st.selectbox('Signal Type', ['sin', 'cos'], key=1) #det the signal type
-      frequency = st.slider("Frequency", min_value=0, max_value = 100, value=1 )          #det the frequency value by slider
-      amplitude = st.slider("Amplitude", min_value=0, max_value = 100 , value=1)          #det the amplitudes value by slider
+      frequency = st.slider("Frequency", min_value=1, max_value = 100, value=1 )          #det the frequency value by slider
+      amplitude = st.slider("Amplitude", min_value=1, max_value = 100 , value=1)          #det the amplitudes value by slider
       submit= st.form_submit_button(label = "Submit")                                      #submit to save the data in cache memory
 
       #update the list of signals information------------------------------
@@ -248,7 +248,7 @@ with col1:
         signal_amp[i] = int(signal_amp[i])  
  
       for n in range(0,len(signal_amp)):            #for loop to save the x and y axis values for signals
-        for t in np.arange(0,1,dt):
+        for t in np.arange(0,6,dt):
           if signal_type[n]=='cos':                
             c.append(signal_amp[n]*np.cos(2*np.pi*signal_freq[n]*t))     
           else:
@@ -258,55 +258,50 @@ with col1:
         
     #initialization for plotting
     f,ax = init_plot() 
-
+    
+    snr = st.slider('Select SNR', 1, 50, key=0, value=50)
     #if the are values for plotting 
-    if len(signal_name)!= 0:   
+    if len(signal_name)!= 0: 
       sum_of_signal_values=np.zeros(len(signal_values[0]))  #array of zeros to add the list in it   
       for i in range(len(signal_values)): 
-        sum_of_signal_values+=np.array(signal_values[i])    #transmit the values in the array 
-      add_to_plot(ax,time,sum_of_signal_values,'y', label='Original Signal') 
+        sum_of_signal_values+=np.array(signal_values[i])
+      all_signals = {'time':time,'signal':sum_of_signal_values}
+      signals_data_frame = pd.DataFrame(all_signals)
+      df = signals_data_frame      #transmit the values in the array 
+      addNoise(snr)
+      #add_to_plot(ax,time,sum_of_signal_values,'y', label='Original Signal') 
          
-    
-    #pass the value of x and y axis to the csv file to update it-------------------------------------------------------
-      collected_data=[time,sum_of_signal_values]
-      export_data=zip_longest(*collected_data,fillvalue='')    #ziplongest used to arrange data within rows 
-      with open('generatedSignalData.csv','w',encoding="ISO-8859-1", newline='') as myfile:
-        wr=csv.writer(myfile)
-        wr.writerow(("time","signal"))
-        wr.writerows(export_data)
-      myfile.close()
-
-    #Expoert the collected_data to be generated-----------------------------------------------
-    df = pd.read_csv('generatedSignalData.csv')
-    time = df['time']
-    signals=df['signal']
-
     #add the noise slider--------------------------------------------------------------------
-    snr = st.slider('Select SNR', 1, 50, key=0, value=50)
-
+    
+    
     #sampling--------------------------------------------------------------------------------
     max_of_time = (max(time))
-    Number_Of_Samples = st.slider('Sampling Rate', min_value= 2, max_value =int(len(df)/(ceil(max_of_time))))  #number of samples we want to take from the df
-    time_samples = []                                # the list which will carry the values of the samples of the time
-    signal_samples = []                              # the list which will carry the values of the samples of the amplitude
-    for i in range(0, df.shape[0], df.shape[0]//(Number_Of_Samples*(ceil(max_of_time)))):                      #take only the specific Number_Of_Samples from the df
-        time_samples.append(df.iloc[:,0][i])         # take the value of the time
-        signal_samples.append(df.iloc[:,1][i])       #take the value of the amplitude
-    add_to_plot(ax, time_samples, signal_samples, 'ko', label='Number of Samples')                             #draw the samples of time and f_amplitude as small black circles
-    
-    #reconstraction-------------------------------------------------------------------------
-    ans = interpolate(time, time_samples, signal_samples)                                                      # result of reconstruction
-    add_to_plot(ax, time, ans, 'c', label='Reconstructed Signal')                                              #draw the reconstructed signal  
+    if len(signal_name)!= 0:
+      
+      multiplication_of_fmax = st.slider('Sampling with fmax', min_value= 0.1, max_value =6.0, step =0.1)  #number of samples we want to take from the df
+      Number_Of_Samples = multiplication_of_fmax *max(signal_freq)
+      Number_Of_Samples = ceil(Number_Of_Samples)
+      time_samples = []                                # the list which will carry the values of the samples of the time
+      signal_samples = []                              # the list which will carry the values of the samples of the amplitude
+      for i in range(0, df.shape[0], df.shape[0]//((Number_Of_Samples+1)*(ceil(max_of_time)))):                      #take only the specific Number_Of_Samples from the df
+          time_samples.append(df.iloc[:,0][i])         # take the value of the time
+          signal_samples.append(df.iloc[:,1][i])       #take the value of the amplitude
+      add_to_plot(ax, time_samples, signal_samples, 'ko', label='Number of Samples')                             #draw the samples of time and f_amplitude as small black circles    
+      #reconstraction-------------------------------------------------------------------------
+      time_domain = np.linspace(0, max_of_time, 10000)
+      ans = interpolate(time_domain, time_samples, signal_samples)                                                      # result of reconstruction
+      add_to_plot(ax, time_domain, ans, 'c', label='Reconstructed Signal')                                           #draw the reconstructed signal  
     
     
     
     #download the updated signal------------------------------------------------------------------==
     def convert_df(df_download):
         return df_download.to_csv().encode('utf-8')
-    data = {'time':time,'signal':ans}
-    df_download = pd.DataFrame(data)
-    csv = convert_df(df_download)
-    st.download_button( label="Download reconstructed data", data=csv, file_name='large_df.csv', mime='text/csv')
+    if len(signal_name)!= 0:
+      data = {'time':time_domain,'signal':ans}
+      df_download = pd.DataFrame(data)
+      csv = convert_df(df_download)
+      st.download_button( label="Download reconstructed data", data=csv, file_name='large_df.csv', mime='text/csv')
 
     #delete the choosen siganl--------------------------------------------------------------------------
     delete = st.selectbox("Select signal to be removed",signal_name)
