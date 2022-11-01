@@ -12,10 +12,11 @@
 ## technology used 
 ### python with streamlit
 ## Team Members:
-### Saeed Elsayed   
-###  Maryam Megahed
-###  Mazen Tarek
-###  Neveen Mohamed
+#### Name        
+#### Saeed Elsayed   
+####  Maryam Megahed
+####  Mazen Tarek
+####  Neveen Mohamed
 
 ## Screenshots of the web app
 generating sin wave with frequency 4hz and amplitude 2v 
