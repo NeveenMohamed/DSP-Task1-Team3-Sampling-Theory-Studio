@@ -17,7 +17,7 @@
 ###  Mazen Tarek
 ###  Neveen Mohamed
 
-##Screenshots of the web app
+## Screenshots of the web app
 generating sin wave with frequency 4hz and amplitude 2v 
 ![Screenshot 2022-11-01 180335](https://user-images.githubusercontent.com/92316869/199279986-e0faf0f2-4f02-46d3-9f7d-b4de2fe9c164.png)
 
